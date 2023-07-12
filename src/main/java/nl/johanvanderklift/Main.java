@@ -5,7 +5,7 @@ import java.util.Random;
 public class Main {
   public static void main(String[] args) {
 
-    int[] inputArray = new int[100000000];
+    int[] inputArray = new int[100];
     Random rand = new Random();
 
     for (int i = 0; i < inputArray.length; i++) {
@@ -13,12 +13,16 @@ public class Main {
     }
 
     System.out.println("Before: ");
-//    printArray(inputArray);
+    printArray(inputArray);
 
-    quickSort(inputArray, 0, inputArray.length - 1);
+    quickSort(inputArray);
 
     System.out.println("\nAfter: ");
-//    printArray(inputArray);
+    printArray(inputArray);
+  }
+
+  private static void quickSort(int[] inputArray) {
+    quickSort(inputArray, 0, inputArray.length - 1);
   }
 
   private static void quickSort(int[] inputArray, int lowIndex, int highIndex) {
@@ -27,7 +31,18 @@ public class Main {
       return;
     }
 
-    int pivot = inputArray[highIndex];
+    int pivotIndex = new Random().nextInt(highIndex - lowIndex) + lowIndex;
+    int pivot = inputArray[pivotIndex];
+    swap(inputArray, pivotIndex, highIndex);
+
+    int leftPointer = partition(inputArray, lowIndex, highIndex, pivot);
+
+    quickSort(inputArray, lowIndex, leftPointer - 1);
+    quickSort(inputArray, leftPointer + 1, highIndex);
+
+  }
+
+  private static int partition(int[] inputArray, int lowIndex, int highIndex, int pivot) {
     int leftPointer = lowIndex;
     int rightPointer = highIndex;
 
@@ -44,10 +59,7 @@ public class Main {
     }
 
     swap(inputArray, leftPointer, highIndex);
-
-    quickSort(inputArray, lowIndex, leftPointer - 1);
-    quickSort(inputArray, leftPointer + 1, highIndex);
-
+    return leftPointer;
   }
 
   private static void swap(int[] array, int index1, int index2) {
